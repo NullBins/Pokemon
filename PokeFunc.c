@@ -256,25 +256,19 @@ void selectAdvAttack(Pokemon* battlePkm, Pokemon* wildPkm) {
 }
 
 // [Adventure] Select Bag(2)
-int selectAdvBag(Player* pt, Pokemon* battlePkm, Pokemon* wildPkm, int* battlePkmIndex) {
+int selectAdvBag(Player* pt, Pokemon* battlePkm, Pokemon* wildPkm) {
     int itemSelect = 0;
     int addHp = 0;
     while (1) {
+        if (battlePkm->health <= 0) return 1;
         // === 야생/플레이어 포켓몬 정보 화면 ===
         getLine(DEF_LINE_NUM);
         printf("\t\t\t%s\n\t\t\t(HP %d/%d)\n",
             wildPkm->nickname, wildPkm->health, wildPkm->maxHealth);
-        if (pt->party[*battlePkmIndex]->health != 0) {
-            printf("%s\n(HP %d/%d)\n",
-                pt->party[*battlePkmIndex]->nickname,
-                pt->party[*battlePkmIndex]->health,
-                pt->party[*battlePkmIndex]->maxHealth);
-        } else {
-            printf("%s\n(HP %d/%d)\n",
-                pt->party[*battlePkmIndex + 1]->nickname,
-                pt->party[*battlePkmIndex + 1]->health,
-                pt->party[*battlePkmIndex + 1]->maxHealth);
-        }
+        printf("%s\n(HP %d/%d)\n",
+            battlePkm->nickname,
+            battlePkm->health,
+            battlePkm->maxHealth);
         // === 아이템 정보 화면 ===
         getLine(DEF_LINE_NUM);
         printf("1. 몬스터볼 x %d\n2. 회복약 x %d\n3. 뒤로 가기\n", pt->pkmBalls, pt->healItems);
@@ -351,7 +345,7 @@ void playAdventure(Player* pt, PokemonData* pkmData, int pkmCount) {
     for (int i = 1; i <= randSec; i++) {
         printf(GREEN "\r포켓몬을 탐색하는중 . . . (%d/%d)" RESET, i, randSec);
         fflush(stdout);
-        sleep(i);
+        sleep(1);
     }
     printf("\n");
     // === 포켓몬 탐색 완료 화면 ===
@@ -385,7 +379,7 @@ void playAdventure(Player* pt, PokemonData* pkmData, int pkmCount) {
             if (wildPkm->health == 0) battle = 0;
         // === 가방열기 선택 ===
         } else if (select == 2) {
-            if (selectAdvBag(pt, battlePkm, wildPkm, &battlePkmIndex) != 1) battle = 0;
+            if (selectAdvBag(pt, battlePkm, wildPkm) != 1) battle = 0;
         } else if (select == 3) {
             if (runAway(wildPkm)) {
                 getLine(DEF_LINE_NUM); puts(GREEN "무사히 도망쳤습니다." RESET);

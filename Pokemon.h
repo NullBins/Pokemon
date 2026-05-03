@@ -49,7 +49,7 @@ int takePkm(Pokemon* wildPkm);
 int runAway(Pokemon* wildPkm);
 char* pkmTypeString(int type);
 void selectAdvAttack(Pokemon* battlePkm, Pokemon* wildPkm);
-int selectAdvBag(Player* pt, Pokemon* battlePkm, Pokemon* wildPkm, int* battlePkmIndex);
+int selectAdvBag(Player* pt, Pokemon* battlePkm, Pokemon* wildPkm);
 void playAdventure(Player* pt, PokemonData* pkmData, int pkmCount);
 void goToShop(Player* pt);
 void goToPkmCenter(Player* pt);
